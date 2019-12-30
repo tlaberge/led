@@ -8,7 +8,7 @@ parser.add_argument('--pulse', action='store', type=float, default=0)
 args = parser.parse_args()
 
 pulse = args.pulse
-if pulse < 0:
+if pulse <= 0:
     raise ValueError("Pulse length can't be negative")
 
 brightness = args.brightness
@@ -23,14 +23,12 @@ cycle = 0.01
 
 while True:
 
-    while pulse_tick < pulse:
+    for pulse_tick in (0, pulse):
 
         led.on()
         sleep(cycle * on)
         led.off()
         sleep(cycle * off)
-        pulse_tick = pulse_tick + cycle
 
-    pulse_tick = 0
     led.off()
     sleep(pulse)
