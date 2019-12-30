@@ -23,12 +23,15 @@ cycle = 0.01
 
 while True:
 
-    for pulse_tick in (0, pulse):
+    pulse_tick = 0
+
+    while pulse_tick < pulse:
 
         led.on()
         sleep(cycle * on)
         led.off()
         sleep(cycle * off)
+        pulse_tick = pulse_tick + cycle
 
     led.off()
     sleep(pulse)
