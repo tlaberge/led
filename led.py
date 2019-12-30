@@ -1,10 +1,11 @@
 from argparse import ArgumentParser
-from gpiozero import LED 
+from gpiozero import LED
 from time import sleep
 
 parser = ArgumentParser()
 parser.add_argument('--brightness', action='store', type=float, default=1.0)
 args = parser.parse_args()
+
 
 led = LED(18)
 led.on()
@@ -19,4 +20,3 @@ else:
         sleep(.001 * args.brightness)
         led.off()
         sleep(.001 / args.brightness)  
-
