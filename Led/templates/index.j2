@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LED Slider Demo</title>
+    <style>
+
+    </style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+
+
+<div align="center">
+    <H1>LED Slider Demo</H1>
+<input id="brightness" type="range" min="0" max="100" value="0" class="slider">
+    <p id="text_brightness">0</p>
+
+</div>
+<script>
+    socket = io('http://127.0.0.1:8000/brightness');
+
+    socket.on('connect', function () {
+        console.log("Socket connected.")
+    });
+    socket.on('disconnect', function () {
+        console.log("socket disconnected.")
+    });
+    socket.on('connect_error', function (e) {
+        console.log("Connection error: ", e);
+    });
+    socket.on('connect_timeout', function (e) {
+        console.log("Connection timeout: ", e);
+    });
+
+    var brightness_slider = document.getElementById("brightness");
+    var brightness_text = document.getElementById("text_brightness");
+
+    brightness_slider.oninput = function () {
+        var brightness = this.value;
+        console.log("Sending brightness: ", brightness);
+        socket.emit('brightness', brightness);
+        brightness_text.innerHTML = this.value
+    };
+
+</script>
+</body>
+</html>
