@@ -13,15 +13,19 @@
 
 <div align="center">
     <H1>LED Slider Demo</H1>
-<input id="brightness" type="range" min="0" max="100" value="0" class="slider">
-    <p id="text_brightness">0</p>
+<input id="brightness" type="range" min="0" max="100" value="50" class="slider">
+    <P>
+        LED Brightness:
+        <span id="text_brightness">50</span>
+    </P>
 
 </div>
 <script>
-    socket = io('http://127.0.0.1:8000/brightness');
+    socket = io('http://192.168.1.148:8000/brightness');
 
     socket.on('connect', function () {
-        console.log("Socket connected.")
+        console.log("Socket connected.");
+        socket.emit('brightness', 50)
     });
     socket.on('disconnect', function () {
         console.log("socket disconnected.")
