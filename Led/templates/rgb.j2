@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RGB LED Slider Demo</title>
+    <style>
+
+    </style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+
+
+<div align="center">
+    <H1>RGB LED Slider Demo</H1>
+    <table>
+        <tr>
+            <td>
+                <input id="red_slider" type="range" min="0" max="100" value="50" class="slider"><br>
+                Red: <span id="red_text">50</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input id="green_slider" type="range" min="0" max="100" value="50" class="slider"><br>
+                Green: <span id="green_text">50</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input id="blue_slider" type="range" min="0" max="100" value="50" class="slider"><br>
+                Blue: <span id="blue_text">50</span>
+            </td>
+        </tr>
+        </table>
+
+</div>
+<script>
+    socket = io('http://192.168.1.148:8000/rgb_socket');
+
+    socket.on('connect', function () {
+        console.log("Socket connected.");
+        emit_values();
+    });
+    socket.on('disconnect', function () {
+        console.log("socket disconnected.")
+    });
+    socket.on('connect_error', function (e) {
+        console.log("Connection error: ", e);
+    });
+    socket.on('connect_timeout', function (e) {
+        console.log("Connection timeout: ", e);
+    });
+
+    var red_slider = document.getElementById("red_slider");
+    var red_text = document.getElementById("red_text");
+
+    var green_slider = document.getElementById("green_slider");
+    var green_text = document.getElementById("green_text");
+
+    var blue_slider = document.getElementById("blue_slider");
+    var blue_text = document.getElementById("blue_text");
+
+    var emit_values = function() {
+        socket.emit("rgb", [red_slider.value, green_slider.value, blue_slider.value]);
+        red_text.innerHTML = red_slider.value;
+        green_text.innerHTML = green_slider.value;
+        blue_text.innerHTML = blue_slider.value;
+    };
+
+    red_slider.oninput = function () {
+        var brightness = this.value;
+        console.log("RED: ", brightness);
+        emit_values();
+
+    };
+
+    green_slider.oninput = function () {
+        var brightness = this.value;
+        console.log("Green: ", brightness);
+        emit_values();
+
+    };
+
+    blue_slider.oninput = function () {
+        var brightness = this.value;
+        console.log("Blue: ", brightness);
+        emit_values();
+
+    };
+</script>
+</body>
+</html>
